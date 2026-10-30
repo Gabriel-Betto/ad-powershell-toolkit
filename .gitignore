@@ -1,0 +1,18 @@
+# Logs gerados pelos scripts
+logs/
+*.log
+
+# Relatórios e exportações geradas localmente
+reports/
+*_export.csv
+
+# Resultados de testes
+testResults.xml
+coverage.xml
+
+# Arquivos de editor/sistema
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
