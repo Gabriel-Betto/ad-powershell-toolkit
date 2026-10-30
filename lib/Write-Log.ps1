@@ -47,6 +47,9 @@ function Write-Log {
     .EXAMPLE
         Write-Log -Path ./logs/exemplo.log -Message 'Início da execução'
     #>
+    # Não existe Write-Log nativo no Windows PowerShell 5.1 nem no PowerShell 7; o alerta vem do
+    # perfil de compatibilidade do PowerShell 6.1 e a função é carregada apenas no escopo dos scripts.
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidOverwritingBuiltInCmdlets', '', Justification = 'Nome definido para o toolkit; sem conflito em 5.1/7.x.')]
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -76,7 +79,7 @@ function Write-Log {
     }
 
     switch ($Level) {
-        'WARN'  { Write-Warning $safeMessage }
+        'WARN' { Write-Warning $safeMessage }
         'ERROR' { Write-Warning "ERRO: $safeMessage" }
         default { Write-Verbose $safeMessage }
     }

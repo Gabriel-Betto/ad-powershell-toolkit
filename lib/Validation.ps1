@@ -80,7 +80,7 @@ function Get-MissingCsvColumn {
     )
 
     $present = @($Header | ForEach-Object { "$_".Trim() })
-    return @($RequiredColumn | Where-Object { $present -notcontains $_ })
+    return [string[]]@($RequiredColumn | Where-Object { $present -notcontains $_ })
 }
 
 function Get-CsvValue {

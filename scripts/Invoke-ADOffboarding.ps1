@@ -95,7 +95,8 @@ $libPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath '
 . (Join-Path -Path $libPath -ChildPath 'Write-Log.ps1')
 . (Join-Path -Path $libPath -ChildPath 'Validation.ps1')
 
-function New-Result {
+function ConvertTo-Result {
+    [OutputType([pscustomobject])]
     param([string]$Login, [string]$Status, [string]$Message)
     [pscustomobject]@{ Login = $Login; Status = $Status; Mensagem = $Message }
 }
@@ -167,7 +168,7 @@ try {
             $user = Get-ADUser @adParams -Filter "SamAccountName -eq '$login'" -Properties MemberOf, Description -ErrorAction Stop
             if (-not $user) {
                 Write-Log -Path $LogPath -Level WARN -Message "Usuário '$login' não encontrado no AD."
-                New-Result -Login $login -Status 'NaoEncontrado' -Message 'Login não encontrado no AD'
+                ConvertTo-Result -Login $login -Status 'NaoEncontrado' -Message 'Login não encontrado no AD'
                 continue
             }
 
@@ -229,16 +230,16 @@ try {
             }
 
             if ($done.Count -gt 0) {
-                New-Result -Login $login -Status 'Concluido' -Message ($done -join ', ')
+                ConvertTo-Result -Login $login -Status 'Concluido' -Message ($done -join ', ')
             }
             else {
                 Write-Log -Path $LogPath -Message "[Simulação] Nenhuma alteração aplicada em '$login'."
-                New-Result -Login $login -Status 'Simulado' -Message 'Nenhuma alteração aplicada'
+                ConvertTo-Result -Login $login -Status 'Simulado' -Message 'Nenhuma alteração aplicada'
             }
         }
         catch {
             Write-Log -Path $LogPath -Level ERROR -Message "Falha no desligamento de '$login' (etapa: $step): $($_.Exception.Message)"
-            New-Result -Login $login -Status 'Erro' -Message "Etapa '$step': $($_.Exception.Message)"
+            ConvertTo-Result -Login $login -Status 'Erro' -Message "Etapa '$step': $($_.Exception.Message)"
         }
     }
 

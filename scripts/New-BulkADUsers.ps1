@@ -86,7 +86,8 @@ $libPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath '
 . (Join-Path -Path $libPath -ChildPath 'Write-Log.ps1')
 . (Join-Path -Path $libPath -ChildPath 'Validation.ps1')
 
-function New-Result {
+function ConvertTo-Result {
+    [OutputType([pscustomobject])]
     param([string]$Login, [string]$Status, [string]$Message)
     [pscustomobject]@{ Login = $Login; Status = $Status; Mensagem = $Message }
 }
@@ -106,7 +107,7 @@ try {
     Write-Log -Path $LogPath -Message "CSV válido: $($csv.Rows.Count) usuário(s)."
 
     if ($ValidateOnly) {
-        $csv.Rows | ForEach-Object { New-Result -Login $_.Login -Status 'Valido' -Message $_.OU }
+        $csv.Rows | ForEach-Object { ConvertTo-Result -Login $_.Login -Status 'Valido' -Message $_.OU }
         Write-Log -Path $LogPath -Message 'Modo -ValidateOnly: nenhuma alteração foi feita.'
         return
     }
@@ -131,7 +132,7 @@ try {
             $existing = Get-ADUser @adParams -Filter "SamAccountName -eq '$login'" -ErrorAction Stop
             if ($existing) {
                 Write-Log -Path $LogPath -Level WARN -Message "Usuário '$login' já existe no AD. Ignorado."
-                New-Result -Login $login -Status 'Existente' -Message 'Login já existe no AD'
+                ConvertTo-Result -Login $login -Status 'Existente' -Message 'Login já existe no AD'
             }
             else {
                 $displayName = "$($user.Nome) $($user.Sobrenome)"
@@ -154,17 +155,17 @@ try {
                 if ($PSCmdlet.ShouldProcess("$login em '$($user.OU)'", 'Criar usuário no AD')) {
                     New-ADUser @adParams @newUserParams -ErrorAction Stop
                     Write-Log -Path $LogPath -Message "Usuário '$login' criado em '$($user.OU)'."
-                    New-Result -Login $login -Status 'Criado' -Message $user.OU
+                    ConvertTo-Result -Login $login -Status 'Criado' -Message $user.OU
                 }
                 else {
                     Write-Log -Path $LogPath -Message "[Simulação] Usuário '$login' seria criado em '$($user.OU)'."
-                    New-Result -Login $login -Status 'Simulado' -Message $user.OU
+                    ConvertTo-Result -Login $login -Status 'Simulado' -Message $user.OU
                 }
             }
         }
         catch {
             Write-Log -Path $LogPath -Level ERROR -Message "Falha ao processar '$login': $($_.Exception.Message)"
-            New-Result -Login $login -Status 'Erro' -Message $_.Exception.Message
+            ConvertTo-Result -Login $login -Status 'Erro' -Message $_.Exception.Message
         }
     }
 
