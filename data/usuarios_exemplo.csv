@@ -1,0 +1,6 @@
+﻿Nome;Sobrenome;Login;Email;Departamento;Cargo;OU
+Ana;Exemplo;ana.exemplo;ana.exemplo@corp.example.com;TI;Analista de Suporte;OU=Usuarios,OU=TI,DC=corp,DC=example,DC=com
+Bruno;Ficticio;bruno.ficticio;bruno.ficticio@corp.example.com;Financeiro;Assistente Financeiro;OU=Usuarios,OU=Financeiro,DC=corp,DC=example,DC=com
+Carla;Teste;carla.teste;carla.teste@corp.example.com;RH;Analista de RH;OU=Usuarios,OU=RH,DC=corp,DC=example,DC=com
+Diego;Modelo;diego.modelo;;Comercial;Vendedor;OU=Usuarios,OU=Comercial,DC=corp,DC=example,DC=com
+Elisa;Demonstração;elisa.demo;elisa.demo@corp.example.com;TI;Administradora de Sistemas;OU=Usuarios,OU=TI,DC=corp,DC=example,DC=com
