@@ -1,0 +1,16 @@
+# Logs e relatórios gerados pelos scripts (podem conter nomes e logins reais)
+logs/*
+!logs/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# Qualquer CSV com dados reais não deve ser versionado.
+# Só o arquivo de exemplo (fictício) fica no repositório.
+data/*.csv
+!data/usuarios_exemplo.csv
+
+# Arquivos do sistema e do editor
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store

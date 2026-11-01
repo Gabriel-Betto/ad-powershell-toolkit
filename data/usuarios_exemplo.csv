@@ -1,0 +1,5 @@
+Nome,Sobrenome,Login,Departamento,Cargo,Grupos
+Ana,Souza,ana.souza,Financeiro,Analista Financeiro,GRP_Financeiro;GRP_VPN
+Bruno,Lima,bruno.lima,Comercial,Vendedor,GRP_Comercial
+Carla,Mendes,carla.mendes,TI,Analista de Suporte,GRP_TI;GRP_VPN
+Diego,Rocha,diego.rocha,Logistica,Auxiliar de Logistica,GRP_Logistica
